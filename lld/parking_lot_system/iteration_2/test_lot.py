@@ -23,7 +23,8 @@ def test_car_leaves():
     park_event = lot.cars_parked.get("12345")
     assert park_event.exit == 20
     
-def test_lot_full():
+def test_lot_full(mocker):
+    mock_print = mocker.patch("lld.parking_lot_system.iteration_2.lot.print")
     lot = ParkingLot()
 
     for i in range(299):
@@ -38,6 +39,7 @@ def test_lot_full():
 
     park_result = lot.car_enters("300", 300)
     assert park_result == False
+    mock_print.assert_called_with("The parking lot is full.")
 
 def test_car_enters__existing_car(mocker):
     mock_print = mocker.patch("lld.parking_lot_system.iteration_2.lot.print")
