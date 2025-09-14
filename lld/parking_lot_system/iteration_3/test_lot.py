@@ -1,5 +1,4 @@
 from .lot import ParkingLot, ParkEvent
-import pytest
 
 def test_car_enters(mocker):
     mock_print = mocker.patch("lld.parking_lot_system.iteration_3.lot.print")
@@ -40,8 +39,7 @@ def test_car_enters(mocker):
     assert lot.cars_parked["346346"].enter == 25
     assert lot.cars_parked["346346"].exit is None
 
-def test_car_leaves(mocker):
-    mock_print = mocker.patch("lld.parking_lot_system.iteration_3.lot.print")
+def test_car_leaves():
     lot = ParkingLot(capacity_per_level=1000, levels=200)
 
     lot.car_enters("12345", 5, 2)
@@ -54,7 +52,7 @@ def test_car_leaves(mocker):
     assert lot.capacity == 200000 - 3
 
     
-def test_lot_full(mocker):
+def test_lot_full():
     lot = ParkingLot(capacity_per_level=1, levels=1)
     
     lot.car_enters("12345", 5, 0)

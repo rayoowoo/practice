@@ -19,6 +19,7 @@ class Car:
 @dataclass
 class ParkingLotLevel:
     capacity: int
+    num: int
     
     def __post_init__(self):
         self.compact_capacity = int(self.capacity // 2)
@@ -44,6 +45,7 @@ class ParkingLotLevel:
     def car_enters(self, car: Car, time: int):
         if self.cars_parked.get(car.license):
             print(f"This car {car.license} is already parked!")
+            return False
         elif car.is_compact:
             return self._handle_compact_car(car, time)
         else:
@@ -80,7 +82,7 @@ class ParkingLotLevel:
         elif park_event.enter > time:
             print(f"This car {car.license} cannot be leaving before it entered.")
         elif park_event.exit:
-            print(f"This car {car.license} has already left the lot at {park_event.exit}")
+            print(f"This car {car.license} has already left the lot at {park_event.exit}.")
         else:  
             park_event.end(time)
         
@@ -102,11 +104,11 @@ class ParkEvent:
     exit: int = None
 
     def __post_init__(self):
-        print(f"Car {self.car.license} entered at {self.enter}")
+        print(f"Car {self.car.license} entered at {self.enter}.")
 
     def end(self, time: int):        
         self.exit = time
-        print(f"Car {self.car.license} left at {time}")
+        print(f"Car {self.car.license} left at {time}.")
 
 @dataclass
 class ParkingLot:
@@ -115,7 +117,9 @@ class ParkingLot:
     levels: int
 
     def __post_init__(self):
-        self.LEVELS = [ParkingLotLevel(self.capacity_per_level)] * self.levels
+        self.LEVELS = []
+        for i in range(self.levels):
+            self.LEVELS.append(ParkingLotLevel(self.capacity_per_level, i))
         self.cars_parked = {}
 
     def car_enters(self, car: Car, time: int, level_num: int):
@@ -132,12 +136,13 @@ class ParkingLot:
         leaves = level.car_leaves(car, time)
         return leaves
     
+    @property
     def is_lot_full(self):
-        return self.capacity == 0
+        return all([level.is_full for level in self.LEVELS])
     
     @property
     def capacity(self):
-        return all([level.is_full for level in self.LEVELS])
+        return sum([level.open_spaces for level in self.LEVELS])
     
     @cached_property
     def total_capacity(self):
