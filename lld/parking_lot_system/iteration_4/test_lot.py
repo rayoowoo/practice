@@ -1,0 +1,39 @@
+from .lot import ParkingLot, ParkEvent
+import pytest
+
+def test_compact_car_enters(mocker):
+    ...
+
+def test_compact_car_leaves(mocker):
+    ...
+
+def test_regular_car_enters(mocker):
+    ...
+
+def test_regular_car_leaves(mocker):
+    ...
+
+    
+def test_lot_full(mocker):
+    ...
+
+def test_car_enters__invalid_level(mocker):
+    ...
+
+def test_compact_car_enters__level_full(mocker):
+    ...
+
+def test_regular_car_enters__level_full(mocker):
+    ...
+
+def test_car_enters__existing_car(mocker):
+    ...
+
+def test_car_leaves__nonexistent_car(mocker):
+    ...
+
+def test_car_leaves__already_left(mocker):
+    ...
+
+def test_car_leaves__exit_earlier_than_enter(mocker):
+    ...
